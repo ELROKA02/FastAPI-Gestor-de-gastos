@@ -1,0 +1,117 @@
+############################
+# ENTORNO VIRTUAL
+############################
+venv/
+.env
+.env.*
+!.env.example
+
+
+############################
+# VARIABLES SENSIBLES
+############################
+*.env
+*.key
+*.pem
+secrets/
+credentials/
+
+
+############################
+# PYTHON
+############################
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+pip-wheel-metadata/
+.pytest_cache/
+.mypy_cache/
+.pytype/
+ruff_cache/
+
+
+############################
+# LOGS Y ARCHIVOS TEMPORALES
+############################
+logs/
+*.log
+*.tmp
+*.temp
+
+
+############################
+# BASE DE DATOS / BACKUPS
+############################
+*.sqlite3
+*.db
+*.sql
+dump/
+backups/
+
+
+############################
+# IDEs / EDITORES
+############################
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+
+############################
+# SISTEMA OPERATIVO
+############################
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+Desktop.ini
+
+# Linux
+*~
+
+
+############################
+# FRONTEND / WEB
+############################
+node_modules/
+dist/
+build/
+.cache/
+.parcel-cache/
+
+
+############################
+# TESTING / COVERAGE
+############################
+htmlcov/
+.coverage
+coverage.xml
+*.cover
+
+
+############################
+# DOCKER (FUTURO)
+############################
+.env.docker
+docker-compose.override.yml
+
+
+############################
+# DOCUMENTACIÓN GENERADA
+############################
+docs/_build/
+site/
+
+
+############################
+# OTROS
+############################
+*.swp
+*.bak
+*.old
