@@ -47,3 +47,12 @@ def eliminar_gasto(gasto_id: int, db: Session = Depends(get_db)):
     if gasto is None:
         raise HTTPException(status_code=404, detail="Gasto no encontrado")
     return gasto
+
+@app.get("/gastos/estadisticas")
+def obtener_estadisticas(db: Session = Depends(get_db)):
+    return {
+        "numero_gastos_mes_actual": crud.obtener_total_gastos(db),
+        "total_gastos": crud.obtener_gasto_total(db),
+        "por_categoria": crud.obtener_total_por_categoria(db),
+        "por_mes": crud.obtener_total_por_mes(db)
+    }

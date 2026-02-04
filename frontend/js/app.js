@@ -5,6 +5,8 @@ document.addEventListener("DOMContentLoaded", function() {
     cargarGastos()
 })
 
+const Total_de_gastos = 0
+
 async function cargarGastos() {
     const tbody = document.getElementById("gastos-body")
     const errorDiv = document.getElementById("error")
@@ -120,3 +122,100 @@ formulario.addEventListener("submit", function(event) {
         console.error("Error en la solicitud:", error)
     })
 })
+
+async function cargarEstadisticas() {
+    try{
+        const response = await fetch(`${API_URL}/estadisticas`)
+
+        if(!response.ok){
+            throw new Error("Error al obtener estadisticas")
+        }
+
+        const data = await response.json()
+
+        pintarcard(data, Total_de_gastos)
+        pintarCategorias(data.por_categoria)
+        pintarMeses(data.por_mes)
+        //graficas
+        pintarGraficaCategorias(data.por_categoria)
+        pintarGraficaMeses(data.por_mes)
+    }catch(error){
+        console.error("Error al cargar las estadisticas:", error)
+        alert("No se pudieron cargar las estadisticas")
+    }
+}
+
+function pintarcard(data, Total_de_gastos){
+    document.getElementById("total-gastos").textContent = `${data.total_gastos} €`
+
+    document.getElementById("numero-gastos").textContent = `${data.numero_gastos_mes_actual}`
+
+}
+
+function pintarCategorias(categorias){
+    const tbody = document.getElementById("tabla-categorias")
+    tbody.innerHTML = ""
+
+    categorias.forEach(cat => {
+        const tr = document.createElement("tr")
+
+        tr.innerHTML = `
+            <td>${cat.categoria}</td>
+            <td>${cat.total.toFixed(2)} €</td>
+        `
+        tbody.appendChild(tr)
+    })
+}
+
+let total_este_mes = 0
+
+function pintarMeses(meses){
+    const tbody = document.getElementById("tabla-meses")
+    tbody.innerHTML = ""
+    
+    meses.forEach(mes => {
+        const tr = document.createElement("tr")
+
+        
+        tr.innerHTML = `
+            <td>${mes.mes}</td>
+            <td>${mes.total.toFixed(2)} €</td>
+        `
+        tbody.appendChild(tr)
+    })
+}
+
+async function pintarGraficaCategorias(categorias){
+    const labels = categorias.map(cat => cat.categoria)
+    const valores = categorias.map(cat => cat.total)
+
+    new Chart(document.getElementById("graficoCategorias"), {
+        type: "bar",
+        data: {
+            labels: labels,
+            datasets: [{
+                label: "Gato por categoria (€)",
+                data: valores
+            }]
+        }
+    })
+}
+
+async function pintarGraficaMeses(meses){
+    const labels = meses.map(mes => mes.mes)
+    const valores = meses.map(mes => mes.total)
+
+    new Chart(document.getElementById("graficoMeses"), {
+        type: "line",
+        data: {
+            labels: labels,
+            datasets: [{
+                label: "Gastos por mes (€)",
+                data: valores
+            }]
+        }
+    })
+}
+
+
+document.addEventListener("DOMContentLoaded", cargarEstadisticas);
